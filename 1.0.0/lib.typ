@@ -23,6 +23,7 @@
 #let template(
   title: none,
   subtitle: none,
+  session : "Automne 2025", 
   authors: (),
   display_outline: true,
   outline_depth: 2, 
@@ -98,7 +99,7 @@
     #text(size: 1.7em)[#authors]
   ]
   v(1fr)
-  text(size: 1.4em)[Automne 2025]
+  text(size: 1.4em)[#session]
 
   pagebreak()
 
