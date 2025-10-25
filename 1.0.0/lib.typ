@@ -86,7 +86,7 @@
     }
   )
 
-  image("../LogoUdS.png", width: 10cm)
+  image("LogoUdS.png", width: 10cm)
   v(1fr)
   align(center)[
     #text(size: 3em, weight: "bold")[#title]
