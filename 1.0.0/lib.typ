@@ -20,7 +20,7 @@
   #if padding [ #pad(left: paragraph_indent)[#r]] else [ #r ]
 ]
 
-#let template(
+#let template_uds(
   title: none,
   subtitle: none,
   session : "Automne 2025", 
