@@ -56,13 +56,15 @@
 ``` typst
 #code(
   number: false, 
-  lang: "rust",
-  start_number: 10,
+  start: 10,
   read("file.rs")
 )
 
 #code(
   number: true, 
+  start: 1,
+  end: 10,
+  size: 10pt,
   lang: "python",
   "a = 1
 b = 2
