@@ -57,6 +57,7 @@
 #code(
   number: false, 
   lang: "rust",
+  start_number: 10,
   read("file.rs")
 )
 
