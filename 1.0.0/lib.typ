@@ -20,6 +20,30 @@
   #if padding [ #pad(left: paragraph_indent)[#r]] else [ #r ]
 ]
 
+#let code(number: true, lang: none, code) = block(
+    fill: luma(93%),
+    inset: (top: 8pt, bottom: 8pt, left: 5pt),
+    width: 100%,
+    {
+      if number {
+        grid(
+          columns: (auto, auto),
+          column-gutter: 0.5em,
+          row-gutter: 0.3em,
+          align: (right, left),
+          ..for (i,line) in code.split("\n").enumerate() {
+            (
+              text(fill: luma(0), size: 8pt)[#i],
+              text(fill: luma(0), size: 8.5pt, raw(lang: lang, line)),
+            )
+          }
+        )
+      } else {
+        text(fill: luma(0), size: 8.5pt, raw(lang: lang, code))
+      }
+    }
+  )
+
 #let template_uds(
   title: none,
   subtitle: none,
@@ -62,30 +86,6 @@
       content,
     )
   }
-
-  show raw: it => block(
-    fill: luma(93%),
-    inset: (top: 8pt, bottom: 8pt, left: 5pt),
-    width: 100%,
-    {
-      if it.block {
-        grid(
-          columns: (auto, auto),
-          column-gutter: 1em,
-          row-gutter: par.leading,
-          align: (right, raw.align),
-          ..for line in it.lines {
-            (
-              text(fill: luma(0))[#line.number],
-              text(fill: luma(0), size: 8.5pt, line.body),
-            )
-          }
-        )
-      } else {
-        text(fill: luma(0), size: 8.5pt, it)
-      }
-    }
-  )
 
   image("LogoUdS.png", width: 10cm)
   v(1fr)
