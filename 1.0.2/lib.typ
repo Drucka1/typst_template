@@ -81,6 +81,7 @@
   authors: (),
   display_outline: true,
   outline_depth: 2,
+  paragraph_indent: paragraph_indent,
   body,
 ) = {
   set page(margin: (
@@ -93,7 +94,7 @@
   set text(lang: "fr")
 
   set par(
-    first-line-indent: paragraph_indent,
+    first-line-indent: (amount: paragraph_indent, all: true),
   )
 
   set heading(numbering: "1.a.")
