@@ -1,19 +1,21 @@
-#let horizontal_margin = 2cm
-#let vertical_margin = 1.5cm
+/*
+######################################################################################
+####################################### CONFIG #######################################
+######################################################################################
+*/
+
 #let paragraph_indent = 1.25em
 
 /*
 ######################################################################################
+######################################## MATH ########################################
 ######################################################################################
 */
 
-#let layout = (
-  wrap: auto,
-  equal: 1fr,
-)
+#let layout = ( wrap: auto, equal: 1fr )
 
-#let math(padding: true, layout: layout.equal, steps) = [
-  #let r = align(center)[#table(
+#let math(padding: true, layout: layout.equal, steps) = {
+  let r = align(center)[#table(
     inset: 0pt,
     columns: (layout, layout),
     column-gutter: 3pt,
@@ -22,11 +24,12 @@
     stroke: none,
     ..steps
   )]
-  #if padding [ #pad(left: paragraph_indent)[#r]] else [ #r ]
-]
+  if padding [ #pad(left: paragraph_indent)[#r] ] else [ #r ]
+}
 
 /*
 ######################################################################################
+######################################## CODE ########################################
 ######################################################################################
 */
 
@@ -71,6 +74,7 @@
 
 /*
 ######################################################################################
+#################################### TEMPLATE_UDS ####################################
 ######################################################################################
 */
 
@@ -82,20 +86,25 @@
   display_outline: true,
   outline_depth: 2,
   paragraph_indent: paragraph_indent,
+  begin_chapter_on_new_page: true,
+  margin: (horizontal: 2cm, vertical: 1.5cm),
   body,
 ) = {
+  margin = ( 
+    horizontal: margin.at("horizontal", default: 2cm),
+    vertical: margin.at("vertical", default: 1.5cm),
+  )
+
   set page(margin: (
-    left: horizontal_margin,
-    right: horizontal_margin,
-    top: vertical_margin,
-    bottom: vertical_margin,
+    left: margin.horizontal,
+    right: margin.horizontal,
+    top: margin.vertical,
+    bottom: margin.vertical,
   ))
 
   set text(lang: "fr")
 
-  set par(
-    first-line-indent: (amount: paragraph_indent, all: true),
-  )
+  set par(first-line-indent: (amount: paragraph_indent, all: true))
 
   set heading(numbering: "1.a.")
 
@@ -110,6 +119,7 @@
 
     let content = if it.level <= 2 { it } else { "•  " + it.body }
 
+    if begin_chapter_on_new_page and it.level == 1 { pagebreak() }
     block(
       above: above,
       below: below,
@@ -131,9 +141,10 @@
   v(1fr)
   text(size: 1.4em)[#session]
 
-  pagebreak()
-
   if display_outline {
+
+    if not begin_chapter_on_new_page { pagebreak() }
+
     align(horizon)[
       #outline(
         title: "Table des matières",
@@ -141,9 +152,9 @@
         depth: outline_depth,
       )
     ]
-
-    pagebreak()
   }
+
+  if not begin_chapter_on_new_page { pagebreak() }
 
   body
 }
