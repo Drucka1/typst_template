@@ -88,6 +88,7 @@
   paragraph_indent: paragraph_indent,
   begin_chapter_on_new_page: true,
   margin: (horizontal: 2cm, vertical: 1.5cm),
+  page_numbering: "- 1 -",
   body,
 ) = {
   margin = ( 
@@ -95,12 +96,19 @@
     vertical: margin.at("vertical", default: 1.5cm),
   )
 
-  set page(margin: (
-    left: margin.horizontal,
-    right: margin.horizontal,
-    top: margin.vertical,
-    bottom: margin.vertical,
-  ))
+  set page(
+    margin: (
+      left: margin.horizontal,
+      right: margin.horizontal,
+      top: margin.vertical,
+      bottom: margin.vertical,
+    ),
+    footer: context {
+      if page_numbering != none and counter(page).display("1") != "1" [
+        #align(center, text(13pt, counter(page).display(page_numbering)))
+      ]
+    }
+  )
 
   set text(lang: "fr")
 
@@ -109,20 +117,14 @@
   set heading(numbering: "1.a.")
 
   show heading: it => {
-    let (above, below) = if it.level == 1 {
-      (3em, 1.5em)
-    } else if it.level == 2 {
-      (2em, 1.5em)
-    } else {
-      (1.5em, 1.5em)
-    }
+    let above = if it.level == 1 { 3em } else if it.level == 2 { 2em } else { 1.5em }
 
     let content = if it.level <= 2 { it } else { "•  " + it.body }
 
     if begin_chapter_on_new_page and it.level == 1 { pagebreak() }
     block(
       above: above,
-      below: below,
+      below: 1.5em,
       content,
     )
   }
@@ -132,10 +134,9 @@
   align(center)[
     #text(size: 3em, weight: "bold")[#title]
 
-    #if subtitle != none {
-      text(size: 3em, weight: "bold")[ #subtitle ]
-    }
-    #v(1cm)
+    #if subtitle != none { text(size: 2.6em, weight: "bold")[ #subtitle ] }
+    
+    #v(2cm)
     #text(size: 1.7em)[#authors]
   ]
   v(1fr)
