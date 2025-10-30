@@ -96,20 +96,6 @@
     vertical: margin.at("vertical", default: 1.5cm),
   )
 
-  set page(
-    margin: (
-      left: margin.horizontal,
-      right: margin.horizontal,
-      top: margin.vertical,
-      bottom: margin.vertical,
-    ),
-    footer: context {
-      if page_numbering != none and counter(page).display("1") != "1" [
-        #align(center, text(13pt, counter(page).display(page_numbering)))
-      ]
-    }
-  )
-
   set text(lang: "fr")
 
   set par(first-line-indent: (amount: paragraph_indent, all: true))
@@ -156,6 +142,21 @@
   }
 
   if not begin_chapter_on_new_page { pagebreak() }
+
+
+
+  set page(
+    margin: (
+      left: margin.horizontal,
+      right: margin.horizontal,
+      top: margin.vertical,
+      bottom: margin.vertical,
+    ),
+    footer: context {
+      align(center, text(13pt, counter(page).display(page_numbering)))
+    }
+  )
+  counter(page).update(1)
 
   body
 }
