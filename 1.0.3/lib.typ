@@ -102,19 +102,6 @@
 
   set heading(numbering: "1.a. ")
 
-  show heading: it => {
-    let above = if it.level == 1 { 3em } else if it.level == 2 { 2em } else { 1.5em }
-
-    let content = if it.level <= 2 { it } else { "•  " + it.body }
-
-    if begin_chapter_on_new_page and it.level == 1 { pagebreak() }
-    block(
-      above: above,
-      below: 1.5em,
-      content,
-    )
-  }
-
   image("LogoUdS.png", width: 10cm)
   v(1fr)
   align(center)[
@@ -129,22 +116,20 @@
   text(size: 1.4em)[#session]
 
   if display_outline {
-    if not begin_chapter_on_new_page { pagebreak() }
+    pagebreak()
 
     let outline = outline(depth: outline_depth)
     context {
       // determine 3.5 par des tests
-      if measure(outline).height <= page.height - margin.vertical * 3.5 {
-        align(horizon, outline)
-      } else {
-        outline
-      }
+      if measure(outline).height <= page.height - margin.vertical * 3.5 { v(1fr); }
+      
+      outline;
+      v(1fr)
     }
   }
 
-  if not begin_chapter_on_new_page { pagebreak() }
-
   set page(
+    numbering: "1",
     margin: (
       left: margin.horizontal,
       right: margin.horizontal,
@@ -156,6 +141,20 @@
     },
   )
   counter(page).update(1)
+
+  show heading: it => {
+    let above = if it.level == 1 { 3em } else if it.level == 2 { 2em } else { 1.5em }
+
+    let content = if it.level <= 2 { it } else { "•  " + it.body }
+
+    if begin_chapter_on_new_page and it.level == 1 { pagebreak() }
+    
+    block(
+      above: above,
+      below: 1.5em,
+      content,
+    )
+  }
 
   body
 }
