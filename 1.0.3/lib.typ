@@ -12,9 +12,9 @@
 ######################################################################################
 */
 
-#let layout = ( wrap: auto, equal: 1fr )
+#let Layout = (wrap: auto, equal: 1fr)
 
-#let math(padding: true, layout: layout.equal, steps) = {
+#let math(padding: true, layout: Layout.equal, steps) = {
   let r = align(center)[#table(
     inset: 0pt,
     columns: (layout, layout),
@@ -39,7 +39,7 @@
   size: 11pt,
   start: 1,
   end: none,
-  code
+  code,
 ) = block(
   fill: luma(93%),
   inset: (top: 8pt, bottom: 8pt, left: 5pt),
@@ -48,7 +48,7 @@
     let lines = code.split("\n")
     let total = lines.len()
 
-    let start = if start <= 1 { 1 } else if start > total { total + 1 } else {start}
+    let start = if start <= 1 { 1 } else if start > total { total + 1 } else { start }
     let end = if end == none { total } else if end < start { start - 1 } else if end > total { total } else { end }
 
     let slice = lines.slice(start - 1, end)
@@ -91,7 +91,7 @@
   page_numbering: "- 1 -",
   body,
 ) = {
-  margin = ( 
+  margin = (
     horizontal: margin.at("horizontal", default: 2cm),
     vertical: margin.at("vertical", default: 1.5cm),
   )
@@ -100,7 +100,7 @@
 
   set par(first-line-indent: (amount: paragraph_indent, all: true))
 
-  set heading(numbering: "1.a.")
+  set heading(numbering: "1.a. ")
 
   show heading: it => {
     let above = if it.level == 1 { 3em } else if it.level == 2 { 2em } else { 1.5em }
@@ -121,7 +121,7 @@
     #text(size: 3em, weight: "bold")[#title]
 
     #if subtitle != none { text(size: 2.6em, weight: "bold")[ #subtitle ] }
-    
+
     #v(2cm)
     #text(size: 1.7em)[#authors]
   ]
@@ -129,21 +129,20 @@
   text(size: 1.4em)[#session]
 
   if display_outline {
-
     if not begin_chapter_on_new_page { pagebreak() }
 
-    align(horizon)[
-      #outline(
-        title: "Table des matières",
-        indent: auto,
-        depth: outline_depth,
-      )
-    ]
+    let outline = outline(depth: outline_depth)
+    context {
+      // determine 3.5 par des tests
+      if measure(outline).height <= page.height - margin.vertical * 3.5 {
+        align(horizon, outline)
+      } else {
+        outline
+      }
+    }
   }
 
   if not begin_chapter_on_new_page { pagebreak() }
-
-
 
   set page(
     margin: (
@@ -153,8 +152,8 @@
       bottom: margin.vertical,
     ),
     footer: context {
-      align(center, text(13pt, counter(page).display(page_numbering)))
-    }
+      align(center, text(12pt, counter(page).display(page_numbering)))
+    },
   )
   counter(page).update(1)
 
