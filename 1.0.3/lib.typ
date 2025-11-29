@@ -89,6 +89,7 @@
   begin_chapter_on_new_page: true,
   margin: (horizontal: 2cm, vertical: 1.5cm),
   page_numbering: "- 1 -",
+  indent_multiplicator_for_list_and_enum: 2, 
   body,
 ) = {
   margin = (
@@ -127,6 +128,10 @@
       v(1fr)
     }
   }
+
+  set list(indent: indent_multiplicator_for_list_and_enum*paragraph_indent)
+
+  set enum(indent: indent_multiplicator_for_list_and_enum*paragraph_indent)
 
   set page(
     numbering: "1",
