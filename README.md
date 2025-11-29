@@ -1,11 +1,5 @@
 # Typst Template
 
-## Folder 
-
-``` typst 
-~/snap/code/211/.local/share/typst/packages/local/
-``` 
-
 ## Utilisation 
 
 ### Template
